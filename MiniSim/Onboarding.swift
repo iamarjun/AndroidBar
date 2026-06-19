@@ -20,7 +20,7 @@ class Onboarding: NSObject {
 
     override init() {
         super.init()
-        window.title = "Welcome to MiniSim!"
+        window.title = "Welcome to AndroidBar!"
         window.delegate = self
         window.contentView = NSHostingView(rootView: OnboardingPager())
         window.isOpaque = false

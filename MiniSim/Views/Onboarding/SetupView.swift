@@ -10,23 +10,12 @@ import SwiftUI
 struct SetupView: View {
     var goToNextPage: () -> Void
     @State private var isLoading = true
-    @State private var isXcodeSetupCorrect = true
     @State private var isAndroidSetupCorrect = true
 
-    @AppStorage(UserDefaults.Keys.enableiOSSimulators, store: .standard) var enableiOSSimulators = true
     @AppStorage(UserDefaults.Keys.enableAndroidEmulators, store: .standard) var enableAndroidEmulators = true
 
     var canContinue: Bool {
-        let enableiOS = enableiOSSimulators ? isXcodeSetupCorrect : true
-        let enableAndroid = enableAndroidEmulators ? isAndroidSetupCorrect : true
-        return enableiOS && enableAndroid
-    }
-
-    func checkXcode() {
-        if !enableiOSSimulators {
-            return
-        }
-      isXcodeSetupCorrect = (try? IOSDeviceDiscovery().checkSetup()) != nil
+        return enableAndroidEmulators ? isAndroidSetupCorrect : true
     }
 
     func checkAndroidStudio() {
@@ -42,14 +31,7 @@ struct SetupView: View {
     func checkSetup() {
         isLoading = true
         checkAndroidStudio()
-        checkXcode()
         isLoading = false
-    }
-
-    var setupItemSubTitle: String {
-        isXcodeSetupCorrect ?
-        "Everything is running correctly." :
-        "Something is wrong with your setup. Please check if Xcode is installed correctly."
     }
 
     var body: some View {
@@ -57,19 +39,9 @@ struct SetupView: View {
             Spacer()
             OnboardingHeader(
                 title: "Let's check your setup 🛠️",
-                subTitle: "In order to properly launch simulators,\nyou need to have correct setup."
+                subTitle: "In order to properly launch emulators,\nyou need to have correct setup."
             )
             Spacer()
-
-            if enableiOSSimulators {
-                SetupItemView(
-                    imageName: "xcode",
-                    title: "Xcode",
-                    subTitle: setupItemSubTitle
-                ) {
-                }
-                .redacted(reason: isLoading ? .placeholder : [])
-            }
 
             if enableAndroidEmulators {
                 SetupItemView(

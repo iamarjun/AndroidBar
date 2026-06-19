@@ -95,12 +95,7 @@ struct Command: Identifiable, Codable, Hashable {
         self.command = try container.decode(String.self, forKey: .command)
         self.icon = try container.decode(String.self, forKey: .icon)
 
-        // Support old way of storing data to preserve backward compatibility.
-        if let oldPlatform = try? container.decode(OldPlatformType.self, forKey: .platform) {
-            self.platform = oldPlatform == .android ? Platform.android : Platform.ios
-        } else {
-            self.platform = try container.decode(Platform.self, forKey: .platform)
-        }
+        self.platform = try container.decode(Platform.self, forKey: .platform)
 
         self.needBootedDevice = try container.decode(Bool.self, forKey: .needBootedDevice)
         self.bootsDevice = try container.decodeIfPresent(Bool.self, forKey: .bootsDevice)

@@ -8,9 +8,5 @@
 import Foundation
 
 enum DeviceMenuItem: Int {
-    // Android
     case launchAndroid = 200
-
-    // iOS
-    case launchIOS = 300
 }

@@ -35,18 +35,12 @@ extension DeviceServiceCommon {
 
     let runningApps = NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }
 
-    if let uuid = device.identifier, device.platform == .ios {
-      try? AppleUtils.launchSimulatorApp(uuid: uuid)
-    }
-
     for app in runningApps {
       guard
         let bundleURL = app.bundleURL?.absoluteString,
-        bundleURL.contains(DeviceConstants.BundleURL.simulator.rawValue) ||
-          bundleURL.contains(DeviceConstants.BundleURL.emulator.rawValue) else {
+        bundleURL.contains(DeviceConstants.BundleURL.emulator.rawValue) else {
         continue
       }
-      let isAndroid = bundleURL.contains(DeviceConstants.BundleURL.emulator.rawValue)
 
       for window in AccessibilityElement.allWindowsForPID(app.processIdentifier) {
         guard let windowTitle = window.attribute(key: .title, type: String.self),
@@ -58,24 +52,13 @@ extension DeviceServiceCommon {
           continue
         }
 
-        if isAndroid {
-          AccessibilityElement.forceFocus(pid: app.processIdentifier)
-        } else {
-          window.performAction(key: kAXRaiseAction)
-          app.activate(options: [.activateIgnoringOtherApps])
-        }
+        AccessibilityElement.forceFocus(pid: app.processIdentifier)
       }
     }
   }
 
   private func matchDeviceTitle(windowTitle: String, device: Device) -> Bool {
-    if device.platform == .android {
-      let deviceName = windowTitle.match(#"(?<=- ).*?(?=:)"#).first?.first
-      return deviceName == device.name
-    }
-
-    let deviceName = windowTitle.match(#"^[^–]*"#).first?.first?.trimmingCharacters(in: .whitespacesAndNewlines)
-
+    let deviceName = windowTitle.match(#"(?<=- ).*?(?=:)"#).first?.first
     return deviceName == device.name
   }
 }

@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         miniSim = MiniSim()
 
-        KeyboardShortcuts.onKeyUp(for: .toggleMiniSim) {
+        KeyboardShortcuts.onKeyUp(for: .toggleAndroidBar) {
             self.miniSim.open()
         }
     }

@@ -75,11 +75,6 @@ struct CustomCommandForm: View {
                 .background(.regularMaterial)
                 .cornerRadius(iconPickerButtonCornerRadious)
             }
-            Picker("Platform", selection: $viewModel.platform) {
-                Text("iOS").tag(Platform.ios)
-                Text("Android").tag(Platform.android)
-            }
-
             Toggle(isOn: $viewModel.needsBootedDevice) {
                 Text("Needs booted device")
             }

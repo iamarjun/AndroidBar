@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SetupPreferences: View {
     var goToNextPage: () -> Void
-    @AppStorage(UserDefaults.Keys.enableiOSSimulators, store: .standard) var enableiOSSimulators = true
     @AppStorage(UserDefaults.Keys.enableAndroidEmulators, store: .standard) var enableAndroidEmulators = true
 
     var body: some View {
@@ -17,18 +16,10 @@ struct SetupPreferences: View {
             Spacer()
             OnboardingHeader(
                 title: "Tooling ⚙️",
-                subTitle: """
-                          If you want to use Minisim for launching only Android or
-                          only iOS simulators you can tweak it here.
-                          """
+                subTitle: "Enable or disable Android emulators here."
             )
             Spacer()
             VStack {
-                SetupItemView(imageName: "xcode", title: "Xcode", subTitle: "iOS Simulators") {
-                    Toggle("", isOn: $enableiOSSimulators)
-                        .labelsHidden()
-                        .toggleStyle(.switch)
-                }
                 SetupItemView(imageName: "android_studio", title: "Android Studio", subTitle: "Android Emulators") {
                     Toggle("", isOn: $enableAndroidEmulators)
                         .labelsHidden()
@@ -36,10 +27,9 @@ struct SetupPreferences: View {
                 }
             }
             Spacer()
-            if enableiOSSimulators || enableAndroidEmulators {
+            if enableAndroidEmulators {
                 OnboardingButton("Continue", action: goToNextPage)
             }
-
             Spacer()
         }
     }

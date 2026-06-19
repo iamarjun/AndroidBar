@@ -8,11 +8,5 @@
 import Foundation
 
 enum Platform: String, Codable {
-    case ios
     case android
-}
-
-// TODO: Remove this type during migration to CoreData.
-enum OldPlatformType: Codable {
-    case ios, android
 }

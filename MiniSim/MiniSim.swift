@@ -48,7 +48,7 @@ class MiniSim: NSObject {
             Settings.Pane(
                 identifier: .devices,
                 title: "Devices",
-                toolbarIcon: NSImage(systemSymbolName: "iphone", accessibilityDescription: "") ?? NSImage()
+                toolbarIcon: NSImage(systemSymbolName: "desktopcomputer", accessibilityDescription: "") ?? NSImage()
             ) {
                 Devices()
             },
@@ -120,14 +120,13 @@ class MiniSim: NSObject {
     private func setDefaultValues() {
         UserDefaults.standard.register(defaults: [
             UserDefaults.Keys.enableAndroidEmulators: true,
-            UserDefaults.Keys.enableiOSSimulators: true,
             UserDefaults.Keys.preferedTerminal: "Terminal"
         ])
     }
 
     private func setMenuImage() {
         if let button = statusItem.button {
-          button.toolTip = "MiniSim"
+          button.toolTip = "AndroidBar"
           let itemImage = MenuImage(rawValue: UserDefaults.standard.menuImage)?.image
           itemImage?.isTemplate = true
           button.image = itemImage
@@ -162,27 +161,7 @@ class MiniSim: NSObject {
                 settingsController.window?.orderFrontRegardless()
             case .quit:
                 NSApp.terminate(sender)
-            case .clearDerrivedData:
-                let shouldDelete = NSAlert.showQuestionDialog(
-                    title: "Are you sure?",
-                    message: "This action will delete derived data from your computer."
-                )
-                if !shouldDelete {
-                    return
-                }
-
-                AppleUtils.clearDerivedData { amountCleared, error in
-                    guard error == nil else {
-                        NSAlert.showError(message: error?.localizedDescription ?? "Failed to clear derived  data.")
-                        return
-                    }
-                    UNUserNotificationCenter.showNotification(
-                        title: "Derived data has been cleared!",
-                        body: "Removed \(amountCleared) of data"
-                    )
-                    NotificationCenter.default.post(name: .commandDidSucceed, object: nil)
-                }
-            }
+}
         }
     }
 

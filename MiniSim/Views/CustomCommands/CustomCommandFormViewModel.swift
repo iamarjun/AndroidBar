@@ -63,9 +63,9 @@ extension CustomCommandForm {
 
         func updateAvailableVariables() {
             var variables = Variables.common
-            variables.append(contentsOf: platform == .ios ? Variables.ios : Variables.android)
+            variables.append(contentsOf: Variables.android)
             availableVariables = variables
-            if needsBootedDevice && platform == .android {
+            if needsBootedDevice {
                availableVariables.append(Variables.adbId)
             }
         }

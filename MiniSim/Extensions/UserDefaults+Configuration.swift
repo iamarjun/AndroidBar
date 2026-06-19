@@ -13,7 +13,6 @@ extension UserDefaults {
         static let commands = "commands"
         static let androidHome = "androidHome"
         static let isOnboardingFinished = "isOnboardingFinished"
-        static let enableiOSSimulators = "enableiOSSimulators"
         static let enableAndroidEmulators = "enableAndroidEmulators"
         static let preferedTerminal = "preferedTerminal"
         static let menuImage = "menuImage"
@@ -30,7 +29,7 @@ extension UserDefaults {
     }
 
     @objc public dynamic var menuImage: String {
-        get { string(forKey: Keys.menuImage) ?? "iphone" }
+        get { string(forKey: Keys.menuImage) ?? "box" }
         set { set(newValue, forKey: Keys.menuImage) }
     }
 
@@ -42,11 +41,6 @@ extension UserDefaults {
     public var commands: Data? {
         get { object(forKey: Keys.commands) as? Data }
         set { set(newValue, forKey: Keys.commands) }
-    }
-
-    public var enableiOSSimulators: Bool {
-        get { bool(forKey: Keys.enableiOSSimulators) }
-        set { set(newValue, forKey: Keys.enableiOSSimulators) }
     }
 
     public var enableAndroidEmulators: Bool {

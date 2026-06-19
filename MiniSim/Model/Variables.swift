@@ -15,20 +15,12 @@ enum Variables: String {
     case androidHomePath = "$android_home_path"
     case adbPath = "$adb_path"
 
-    // iOS Specific
-    case uuid = "$uuid"
-    case xcrunPath = "$xcrun_path"
-
     static var common: [Variables] {
         [deviceName]
     }
 
     static var android: [Variables] {
         [androidHomePath, adbPath]
-    }
-
-    static var ios: [Variables] {
-        [uuid, xcrunPath]
     }
 
     var description: String {
@@ -41,10 +33,6 @@ enum Variables: String {
             return NSLocalizedString("Path of $ANDROID_HOME", comment: "")
         case .adbPath:
             return NSLocalizedString("Path of adb utility", comment: "")
-        case .uuid:
-            return NSLocalizedString("Unique identifier of iOS simulator", comment: "")
-        case .xcrunPath:
-            return NSLocalizedString("Path to xcrun utility", comment: "")
         }
     }
 }

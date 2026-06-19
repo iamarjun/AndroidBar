@@ -17,13 +17,6 @@ struct CustomCommands: View {
                 subTitle: "Commands will appear in the menubar as clickable buttons."
             )
 
-            Picker("", selection: $viewModel.selectedPlatform) {
-                Text("iOS").tag(Platform.ios)
-                Text("Android").tag(Platform.android)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.vertical, 3)
-
             Table(viewModel.filteredCommands, selection: $viewModel.selection) {
                 TableColumn("Icon") { command in
                     Image(systemName: command.icon)

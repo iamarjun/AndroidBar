@@ -8,5 +8,5 @@
 import KeyboardShortcuts
 
 extension KeyboardShortcuts.Name {
-    static let toggleMiniSim = Self("toggleMiniSim", default: .init(.e, modifiers: [.option, .shift]))
+    static let toggleAndroidBar = Self("toggleAndroidBar", default: .init(.e, modifiers: [.option, .shift]))
 }

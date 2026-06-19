@@ -8,8 +8,7 @@
 import Foundation
 
 enum MainMenuActions: Int, CaseIterable {
-    case clearDerrivedData = 200
-    case preferences
+    case preferences = 201
     case quit
 
     var keyEquivalent: String {
@@ -18,8 +17,6 @@ enum MainMenuActions: Int, CaseIterable {
             return "q"
         case .preferences:
             return ","
-        default:
-            return ""
         }
     }
 
@@ -29,8 +26,6 @@ enum MainMenuActions: Int, CaseIterable {
             return NSLocalizedString("Quit", comment: "")
         case .preferences:
             return NSLocalizedString("Preferences", comment: "")
-        case .clearDerrivedData:
-            return NSLocalizedString("Clear Xcode Derived Data", comment: "")
         }
     }
 }

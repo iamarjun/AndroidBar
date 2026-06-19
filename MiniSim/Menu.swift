@@ -30,17 +30,12 @@ class Menu: NSMenu {
     }
 
     init() {
-        super.init(title: "MiniSim")
+        super.init(title: "AndroidBar")
         self.delegate = self
     }
 
     func populateDefaultMenu() {
         var sections: [DeviceListSection] = []
-
-        sections.append(.iOSPhysical)
-        if UserDefaults.standard.enableiOSSimulators {
-            sections.append(.iOSVirtual)
-        }
 
         sections.append(.androidPhysical)
         if UserDefaults.standard.enableAndroidEmulators {
@@ -73,8 +68,7 @@ class Menu: NSMenu {
     func updateDevicesList() {
         let userDefaults = UserDefaults.standard
         DeviceServiceFactory.getAllDevices(
-            android: userDefaults.enableAndroidEmulators && userDefaults.androidHome != nil,
-            iOS: userDefaults.enableiOSSimulators
+            android: userDefaults.enableAndroidEmulators && userDefaults.androidHome != nil
         ) { devices, error in
             if let error {
                 NSAlert.showError(message: error.localizedDescription)
@@ -131,13 +125,9 @@ class Menu: NSMenu {
     private func assignKeyEquivalents() {
         let sections = DeviceListSection.allCases.map { $0.title }
         let deviceItems = items.filter { !sections.contains($0.title) }
-        let iosDeviceNames = devices.filter { $0.platform == Platform.ios }.map { $0.displayName }
-        let androidDeviceNames = devices.filter { $0.platform == Platform.android }.map { $0.displayName }
-
-        let iosDevices = deviceItems.filter { iosDeviceNames.contains($0.title) }
+        let androidDeviceNames = devices.map { $0.displayName }
         let androidDevices = deviceItems.filter { androidDeviceNames.contains($0.title) }
 
-        assignKeyEquivalent(devices: iosDevices)
         assignKeyEquivalent(devices: androidDevices)
     }
 
@@ -178,21 +168,12 @@ class Menu: NSMenu {
             sections.append(.androidVirtual)
         }
         sections.append(.androidPhysical)
-
-        if UserDefaults.standard.enableiOSSimulators {
-            sections.append(.iOSVirtual)
-        }
-        sections.append(.iOSPhysical)
         return sections
     }
 
     private func filter(devices: [Device], for section: DeviceListSection) -> [Device] {
       devices.filter { device in
         switch section {
-        case .iOSPhysical:
-          return device.platform == .ios && device.type == .physical
-        case .iOSVirtual:
-          return device.platform == .ios && device.type == .virtual
         case .androidPhysical:
           return device.platform == .android && device.type == .physical
         case .androidVirtual:
@@ -225,12 +206,11 @@ class Menu: NSMenu {
             title: device.displayName,
             action: #selector(deviceItemClick),
             keyEquivalent: "",
-            type: device.platform == .ios ? .launchIOS : .launchAndroid,
-            deviceFamily: device.deviceFamily
+            type: .launchAndroid
         )
 
         menuItem.target = self
-        menuItem.keyEquivalentModifierMask = device.platform == .android ? [.option] : [.command]
+        menuItem.keyEquivalentModifierMask = [.option]
         menuItem.submenu = buildSubMenu(for: device)
         menuItem.state = device.booted ? .on : .off
         return menuItem
@@ -360,11 +340,11 @@ extension Menu: NSMenuDelegate {
     func menuWillOpen(_ menu: NSMenu) {
         NotificationCenter.default.post(name: .menuWillOpen, object: nil)
         self.updateDevicesList()
-        KeyboardShortcuts.disable(.toggleMiniSim)
+        KeyboardShortcuts.disable(.toggleAndroidBar)
     }
 
     func menuDidClose(_ menu: NSMenu) {
         NotificationCenter.default.post(name: .menuDidClose, object: nil)
-        KeyboardShortcuts.enable(.toggleMiniSim)
+        KeyboardShortcuts.enable(.toggleAndroidBar)
     }
 }

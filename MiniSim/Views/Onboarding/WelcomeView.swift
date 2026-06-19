@@ -16,14 +16,14 @@ struct WelcomeView: View {
                 Image(nsImage: appIcon)
             }
             OnboardingHeader(
-                title: "Welcome to MiniSim!",
+                title: "Welcome to AndroidBar!",
                 subTitle: "Thanks for downloading the app"
             )
 
             OnboardingItem(
-                image: "iphone",
+                image: "desktopcomputer",
                 title: "Easily open emulators",
-                description: "All your emulators right in your menu bar without opening Android Studio or Xcode."
+                description: "All your Android emulators right in your menu bar without opening Android Studio."
             )
             .padding(.top, 25)
             OnboardingItem(

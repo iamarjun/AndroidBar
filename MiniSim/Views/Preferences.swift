@@ -9,7 +9,7 @@ import Settings
 import SwiftUI
 
 struct Preferences: View {
-    @State var menuImageSelected: String = "iphone"
+    @State var menuImageSelected: String = "box"
     @State private var preferedTerminal: Terminal
 
     init() {
@@ -57,7 +57,7 @@ struct Preferences: View {
                       .descriptionText()
             }
             Settings.Section(title: "Hotkey:") {
-                KeyboardShortcuts.Recorder("", name: .toggleMiniSim)
+                KeyboardShortcuts.Recorder("", name: .toggleAndroidBar)
                 Text("Global shortcut to open the application \nDefault: ⌥⇧E")
                     .descriptionText()
             }

@@ -41,7 +41,6 @@ enum SubMenuItems {
         case delete
         case logcat
         case upload
-        case localFiles
         case customCommand = 200
     }
 
@@ -71,17 +70,6 @@ enum SubMenuItems {
         let image = NSImage(
             systemSymbolName: "doc.on.doc",
             accessibilityDescription: "Copy ID"
-        )
-    }
-
-    struct CopyUDID: SubMenuActionItem {
-        let title = NSLocalizedString("Copy UDID", comment: "")
-        let tag = Tags.copyID.rawValue
-        let bootsDevice = false
-        let needBootedDevice = false
-        let image = NSImage(
-            systemSymbolName: "doc.on.doc",
-            accessibilityDescription: "Copy UDID"
         )
     }
 
@@ -144,39 +132,6 @@ enum SubMenuItems {
         )
     }
 
-    struct UploadToFiles: SubMenuActionItem {
-        let title = NSLocalizedString("Upload...", comment: "")
-        let tag = Tags.upload.rawValue
-        let bootsDevice = false
-        let needBootedDevice = true
-        let image = NSImage(
-            systemSymbolName: "tray.and.arrow.up",
-            accessibilityDescription: "Upload"
-        )
-    }
-
-    struct LocalFiles: SubMenuActionItem {
-        let title = NSLocalizedString("Open in Finder", comment: "")
-        let tag = Tags.localFiles.rawValue
-        let bootsDevice = false
-        let needBootedDevice = true
-        let image = NSImage(
-            systemSymbolName: "folder",
-            accessibilityDescription: "Local Files"
-        )
-    }
-
-    struct Delete: SubMenuActionItem {
-        let title = NSLocalizedString("Delete simulator", comment: "")
-        let tag = Tags.delete.rawValue
-        let bootsDevice = false
-        let needBootedDevice = false
-        let image = NSImage(
-            systemSymbolName: "trash",
-            accessibilityDescription: "Delete simulator"
-        )
-    }
-
     struct DeleteEmulator: SubMenuActionItem {
         let title = NSLocalizedString("Delete emulator", comment: "")
         let tag = Tags.delete.rawValue
@@ -202,31 +157,8 @@ enum SubMenuItems {
 
 extension SubMenuItems {
   static func items(platform: Platform, deviceType: DeviceType) -> [SubMenuItem] {
-    switch (platform, deviceType) {
-    case (.ios, .physical):
-      return [
-        CopyName(),
-        CopyUDID()
-      ]
-    case (.ios, .virtual):
-      return [
-        CopyName(),
-        CopyUDID(),
-
-        Separator(),
-
-        SectionTitle(
-            title: NSLocalizedString("Local Files", comment: ""),
-            needBootedDevice: true
-        ),
-        UploadToFiles(),
-        LocalFiles(),
-
-        Separator(),
-
-        Delete()
-      ]
-    case (.android, .physical):
+    switch deviceType {
+    case .physical:
       return [
         CopyName(),
         CopyID(),
@@ -246,7 +178,7 @@ extension SubMenuItems {
         Upload()
       ]
 
-    case (.android, .virtual):
+    case .virtual:
       return [
         CopyName(),
         CopyID(),

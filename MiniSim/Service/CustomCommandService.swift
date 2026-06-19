@@ -23,27 +23,16 @@ class CustomCommandService {
   }
 
   static func runCustomCommand(_ device: Device, command: Command) throws {
-    var commandToExecute = command.command
-      .replacingOccurrences(of: Variables.deviceName.rawValue, with: device.name)
-
     let deviceID = device.identifier ?? ""
 
-    if command.platform == .android {
-      commandToExecute = try commandToExecute
-        .replacingOccurrences(of: Variables.adbPath.rawValue, with: adb.getAdbPath())
-        .replacingOccurrences(of: Variables.adbId.rawValue, with: deviceID)
-        .replacingOccurrences(of: Variables.androidHomePath.rawValue, with: adb.getAndroidHome())
-    } else {
-      commandToExecute = commandToExecute
-        .replacingOccurrences(of: Variables.uuid.rawValue, with: deviceID)
-        .replacingOccurrences(of: Variables.xcrunPath.rawValue, with: DeviceConstants.ProcessPaths.xcrun.rawValue)
-    }
+    let commandToExecute = try command.command
+      .replacingOccurrences(of: Variables.deviceName.rawValue, with: device.name)
+      .replacingOccurrences(of: Variables.adbPath.rawValue, with: adb.getAdbPath())
+      .replacingOccurrences(of: Variables.adbId.rawValue, with: deviceID)
+      .replacingOccurrences(of: Variables.androidHomePath.rawValue, with: adb.getAndroidHome())
 
     do {
       try shell.execute(command: commandToExecute)
-      if command.bootsDevice ?? false && command.platform == .ios {
-        try? AppleUtils.launchSimulatorApp(uuid: deviceID)
-      }
       NotificationCenter.default.post(name: .commandDidSucceed, object: nil)
     } catch {
       throw CustomCommandError.commandError(errorMessage: error.localizedDescription)
